@@ -8,6 +8,18 @@ use Illuminate\Database\Eloquent\Model;
 class VisitCard extends Model
 {
     use HasFactory;
+
+    protected $table = 'visitcard'; 
+    protected $fillable = [
+        'user_id',
+        'name',
+        'email',
+        'tel',
+        'adress',
+        'company',
+        'description'
+    ];
+
     
     public function user()
     {
