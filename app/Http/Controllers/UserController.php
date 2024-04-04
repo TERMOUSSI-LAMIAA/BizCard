@@ -10,8 +10,45 @@ use Illuminate\Validation\ValidationException; // Import ValidationException
 use App\Models\User; // Import User model
 use Laravel\Sanctum\PersonalAccessToken; // Import PersonalAccessToken
 
+
+/**
+ * @OA\Info(
+ *     title="Business Card API",
+ *     description="This API allows users to create, update, and delete business cards.",
+ *     version="1.0.0"
+ * )
+ */
+
 class UserController extends Controller
 {
+    /**
+     * Register a new user.
+     *
+     * @OA\Post(
+     *     path="/register",
+     *     summary="Register a new user",
+     *     tags={"Authentication"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         description="User registration data",
+     *         @OA\JsonContent(
+     *             required={"name", "email", "password"},
+     *             @OA\Property(property="name", type="string", example="John Doe"),
+     *             @OA\Property(property="email", type="string", format="email", example="john@example.com"),
+     *             @OA\Property(property="password", type="string", format="password", example="password"),
+     *         ),
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="User registered successfully",
+     *     ),
+     *     @OA\Response(
+     *         response=422,
+     *         description="Validation error",
+     *     )
+     * )
+     */
+
     public function register(Request $request)
     {
         try {
@@ -28,7 +65,7 @@ class UserController extends Controller
                 return response()->json([
                     'status' => false,
                     'message' => 'validation error',
-                    'errors' => $validateUser->erroes()
+                    'errors' => $validateUser->errors()
                 ], 401);
             }
 
@@ -50,7 +87,23 @@ class UserController extends Controller
             ], 500);
         }
     }
-
+    /**
+     * Log in user.
+     *
+     * @OA\Post(
+     *     path="/login",
+     *     summary="Log in user",
+     *     tags={"Authentication"},
+     *     @OA\Response(
+     *         response=200,
+     *         description="User logged in successfully",
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Unauthorized",
+     *     )
+     * )
+     */
     public function login(Request $request){
         try{
             $validateUser = Validator::make(
@@ -89,7 +142,23 @@ class UserController extends Controller
             ], 500);
         }
     }
-
+    /**
+     * Log out user.
+     *
+     * @OA\Post(
+     *     path="/logout",
+     *     summary="Log out user",
+     *     tags={"Authentication"},
+     *     @OA\Response(
+     *         response=200,
+     *         description="User logged out successfully",
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Unauthorized",
+     *     )
+     * )
+     */
     public function logout(Request $request)
     {
         try {

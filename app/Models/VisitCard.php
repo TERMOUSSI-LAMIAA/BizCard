@@ -9,7 +9,7 @@ class VisitCard extends Model
 {
     use HasFactory;
 
-    protected $table = 'visitcard'; 
+    protected $table = 'visitcards';
     protected $fillable = [
         'user_id',
         'name',
@@ -20,7 +20,7 @@ class VisitCard extends Model
         'description'
     ];
 
-    
+
     public function user()
     {
         return $this->belongsTo(User::class);
